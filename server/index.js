@@ -7,11 +7,37 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5001;
 
+// Dynamic CORS configuration for different environments
+const getCorsOrigins = () => {
+  const origins = ['http://localhost:3000'];
+
+  // Add Codespaces URLs if we're in a Codespace environment
+  const codespace = process.env.CODESPACE_NAME;
+  const domain = process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN;
+
+  if (codespace && domain) {
+    origins.push(
+      `https://${codespace}-3000.${domain}`,
+      `https://${codespace}-3000.app.github.dev`
+    );
+  }
+
+  // Allow custom CLIENT_URL from environment
+  if (process.env.CLIENT_URL) {
+    origins.push(process.env.CLIENT_URL);
+  }
+
+  console.log('CORS Origins:', origins);
+  return origins;
+};
+
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
-  credentials: true
+  origin: getCorsOrigins(),
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 app.use(morgan('combined'));
 app.use(express.json());
@@ -53,7 +79,15 @@ const subscriptionPlans = {
 
 // Routes
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+  res.json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    environment: {
+      codespace: process.env.CODESPACE_NAME || 'Not in Codespaces',
+      domain: process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN || 'No Codespaces domain',
+      clientOrigin: req.headers.origin || 'No origin header'
+    }
+  });
 });
 
 app.get('/api/models', (req, res) => {
@@ -155,6 +189,16 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log('Codespace info:', {
+    CODESPACE_NAME: process.env.CODESPACE_NAME,
+    GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN: process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN,
+    isCodespaces: !!(process.env.CODESPACE_NAME && process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN)
+  });
+
+  // In Codespaces, log the expected frontend URL
+  if (process.env.CODESPACE_NAME && process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN) {
+    console.log(`Expected frontend URL: https://${process.env.CODESPACE_NAME}-3000.${process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}`);
+  }
 });
 
 module.exports = app;

@@ -67,15 +67,37 @@ const Calculator: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log('Fetching data from:', API_BASE_URL);
+
+        // Test the connection first
+        console.log('Testing connection...');
+        const healthRes = await axios.get(`${API_BASE_URL}/health`);
+        console.log('Health check successful:', healthRes.data);
+
         const [modelsRes, plansRes] = await Promise.all([
           axios.get(`${API_BASE_URL}/models`),
           axios.get(`${API_BASE_URL}/plans`)
         ]);
         setModels(modelsRes.data);
         setPlans(plansRes.data);
-      } catch (err) {
-        setError('Failed to load configuration data');
+        console.log('Data loaded successfully');
+      } catch (err: any) {
         console.error('Error fetching data:', err);
+        console.error('Error details:', {
+          message: err.message,
+          status: err.response?.status,
+          statusText: err.response?.statusText,
+          url: err.config?.url,
+          method: err.config?.method
+        });
+
+        if (err.code === 'ERR_NETWORK') {
+          setError('Cannot connect to backend server. Please ensure the server is running on port 5001.');
+        } else if (err.response?.status === 0) {
+          setError('CORS error: Frontend cannot communicate with backend. Check CORS configuration.');
+        } else {
+          setError(`Failed to load configuration data: ${err.message}`);
+        }
       }
     };
 
