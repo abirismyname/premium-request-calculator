@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ../..:/workspaces:cached
+      - node_modules:/workspace/node_modules
+      - client_node_modules:/workspace/client/node_modules
+    ports:
+      - "3000:3000"  # React frontend
+      - "5001:5001"  # Express backend
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:5001/api
+    command: sleep infinity
+    networks:
+      - premium-calculator-network
+
+networks:
+  premium-calculator-network:
+    driver: bridge
+
+volumes:
+  node_modules:
+  client_node_modules:
