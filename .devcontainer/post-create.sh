@@ -28,7 +28,8 @@ if [ ! -f client/.env ]; then
     echo "📝 Creating frontend .env file..."
     cat > client/.env << EOF
 # Frontend environment variables
-REACT_APP_API_URL=http://localhost:5001/api
+# Leave empty to use automatic detection for Codespaces/desktop
+# REACT_APP_API_URL=http://localhost:5001/api
 EOF
 fi
 

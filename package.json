@@ -5,11 +5,14 @@
   "main": "server/index.js",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev:desktop": "concurrently \"npm run server\" \"npm run client\"",
+    "dev:codespaces": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon server/index.js",
     "client": "cd client && npm start",
     "build": "cd client && npm run build",
     "start": "node server/index.js",
     "install-all": "npm install && cd client && npm install",
+    "setup": "npm run install-all && echo '✅ Setup complete! Run npm run dev to start development'",
     "test": "cd client && npm test"
   },
   "keywords": ["github", "copilot", "calculator", "premium-requests", "react", "nodejs", "express"],

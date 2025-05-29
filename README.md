@@ -31,23 +31,39 @@ A full-stack web application for calculating GitHub Copilot premium request cost
 - Node.js (v14 or higher)
 - npm or yarn
 
-### Installation
+### Quick Setup
 
-1. **Clone and setup the project:**
-   ```bash
-   cd premium-request-calculator
-   npm run install-all
-   ```
+#### Option 1: GitHub Codespaces (Recommended)
+1. **Open in Codespaces:**
+   - Click the green "Code" button in GitHub
+   - Select "Create codespace on main"
+   - Wait for the environment to set up automatically
 
-2. **Environment Setup:**
-   - Backend environment variables are in `.env`
-   - Frontend environment variables are in `client/.env`
-
-3. **Development Mode:**
+2. **Start Development:**
    ```bash
    npm run dev
    ```
-   This starts both the backend server (port 5000) and React frontend (port 3000) concurrently.
+
+#### Option 2: Local Desktop Development
+1. **Clone and setup the project:**
+   ```bash
+   git clone <repository-url>
+   cd premium-request-calculator
+   npm run setup
+   ```
+
+2. **Start Development:**
+   ```bash
+   npm run dev
+   ```
+
+### Environment Configuration
+
+The app automatically detects whether it's running in Codespaces or desktop and configures the API URLs accordingly. No manual configuration needed!
+
+**Manual Configuration (Optional):**
+- Copy `.env.example` to `.env` for backend settings
+- Copy `client/.env.example` to `client/.env` for frontend settings
 
 ### Available Scripts
 

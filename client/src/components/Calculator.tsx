@@ -23,7 +23,31 @@ interface CalculationResult {
   budgetStatus: 'unlimited' | 'within-budget' | 'over-budget';
 }
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+// Dynamic API URL detection for different environments
+const getApiBaseUrl = () => {
+  // Use environment variable if set
+  if (process.env.REACT_APP_API_URL) {
+    return process.env.REACT_APP_API_URL;
+  }
+  
+  // For Codespaces, use the current hostname with backend port
+  if (window.location.hostname.includes('github.dev') || window.location.hostname.includes('codespaces')) {
+    return `${window.location.protocol}//${window.location.hostname.replace('-3000', '-5001')}/api`;
+  }
+  
+  // Default to localhost for desktop development
+  return 'http://localhost:5001/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
+// Log environment info for debugging
+console.log('Environment Detection:', {
+  hostname: window.location.hostname,
+  isCodespaces: window.location.hostname.includes('github.dev') || window.location.hostname.includes('codespaces'),
+  apiUrl: API_BASE_URL,
+  envVar: process.env.REACT_APP_API_URL
+});
 
 const Calculator: React.FC = () => {
   const [models, setModels] = useState<Record<string, Model>>({});
