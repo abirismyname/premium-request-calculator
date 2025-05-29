@@ -30,6 +30,11 @@ const getApiBaseUrl = () => {
     return process.env.REACT_APP_API_URL;
   }
   
+  // For production (Vercel), use relative URLs to same domain
+  if (process.env.NODE_ENV === 'production') {
+    return '/api';
+  }
+
   // For Codespaces, use the current hostname with backend port
   if (window.location.hostname.includes('github.dev') || window.location.hostname.includes('codespaces')) {
     return `${window.location.protocol}//${window.location.hostname.replace('-3000', '-5001')}/api`;

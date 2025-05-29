@@ -1,0 +1,54 @@
+# Vercel ignore file
+# These files/folders will not be uploaded to Vercel
+
+# Development files
+server/
+.devcontainer/
+test-api.js
+deploy-test.sh
+
+# Node modules (will be installed during build)
+node_modules/
+client/node_modules/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Build outputs (will be generated)
+client/build/
+dist/
+out/

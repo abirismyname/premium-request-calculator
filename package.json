@@ -1,6 +1,7 @@
 {
   "name": "premium-request-calculator",
   "version": "1.0.0",
+  "type": "module",
   "description": "GitHub Copilot Premium Requests Calculator - Full Stack Web Application",
   "main": "server/index.js",
   "scripts": {
@@ -9,11 +10,12 @@
     "dev:codespaces": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon server/index.js",
     "client": "cd client && npm start",
-    "build": "cd client && npm run build",
+    "build": "cd client && npm install && npm run build",
     "start": "node server/index.js",
     "install-all": "npm install && cd client && npm install",
     "setup": "npm run install-all && echo '✅ Setup complete! Run npm run dev to start development'",
-    "test": "cd client && npm test"
+    "test": "cd client && npm test",
+    "vercel-build": "cd client && npm install && npm run build"
   },
   "keywords": ["github", "copilot", "calculator", "premium-requests", "react", "nodejs", "express"],
   "author": "",

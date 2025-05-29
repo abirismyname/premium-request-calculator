@@ -59,6 +59,36 @@ A full-stack web application for calculating GitHub Copilot premium request cost
    npm run dev
    ```
 
+## Deployment
+
+### Deploy to Vercel (Free)
+
+This application is configured for easy deployment to Vercel's free tier:
+
+1. **Push to GitHub**:
+   ```bash
+   git add .
+   git commit -m "Deploy to Vercel"
+   git push origin main
+   ```
+
+2. **Deploy on Vercel**:
+   - Go to [vercel.com](https://vercel.com) and sign up
+   - Click "New Project" and import your GitHub repository
+   - Vercel will automatically detect the configuration and deploy
+
+3. **Access your app**:
+   - Frontend: `https://your-app-name.vercel.app`
+   - API: `https://your-app-name.vercel.app/api/health`
+
+For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
+
+### Alternative Hosting Options
+
+- **Netlify**: Frontend with Netlify Functions for API
+- **Railway**: Full-stack deployment with PostgreSQL support
+- **Heroku**: Traditional deployment (paid plans)
+
 ### Environment Configuration
 
 The app automatically detects whether it's running in Codespaces or desktop and configures the API URLs accordingly. No manual configuration needed!
