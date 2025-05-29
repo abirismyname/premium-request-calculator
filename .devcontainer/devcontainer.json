@@ -51,10 +51,5 @@
 
   "postCreateCommand": ".devcontainer/post-create.sh",
   
-  "remoteUser": "node",
-  
-  "mounts": [
-    "source=${localWorkspaceFolder}/node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
-    "source=${localWorkspaceFolder}/client/node_modules,target=${containerWorkspaceFolder}/client/node_modules,type=volume"
-  ]
+  "remoteUser": "node"
 }
