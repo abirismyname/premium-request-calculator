@@ -2,6 +2,8 @@
 
 A full-stack web application for calculating GitHub Copilot premium request costs based on subscription plans, AI models, and usage patterns.
 
+![Application Screenshot](assets/screenshot.png)
+
 ## Features
 
 - **Cost Calculation**: Calculate premium request costs based on usage patterns
