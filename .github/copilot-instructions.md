@@ -5,7 +5,7 @@
 ## Project Overview
 This is a full-stack web application for calculating GitHub Copilot Premium Request costs. The project consists of:
 
-- **Backend**: Node.js with Express.js API server (port 5000)
+- **Backend**: Node.js with Express.js API server (port 5001)
 - **Frontend**: React with TypeScript application (port 3000)
 - **Architecture**: RESTful API with React SPA frontend
 

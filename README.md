@@ -145,7 +145,7 @@ premium-request-calculator/
 ## Development
 
 ### Backend Development
-The backend runs on port 5000 and provides a RESTful API for calculations. Key features:
+The backend runs on port 5001 and provides a RESTful API for calculations. Key features:
 - Express.js with security middleware
 - Input validation and error handling
 - CORS configuration for frontend communication
