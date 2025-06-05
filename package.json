@@ -13,9 +13,21 @@
     "start": "node server/index.js",
     "install-all": "npm install && cd client && npm install",
     "setup": "npm run install-all && echo '✅ Setup complete! Run npm run dev to start development'",
-    "test": "cd client && npm test"
+    "test": "npm run test:server",
+    "test:server": "jest --config jest.config.json",
+    "test:client": "cd client && npm test",
+    "test:server:watch": "jest --config jest.config.json --watch",
+    "test:server:coverage": "jest --config jest.config.json --coverage"
   },
-  "keywords": ["github", "copilot", "calculator", "premium-requests", "react", "nodejs", "express"],
+  "keywords": [
+    "github",
+    "copilot",
+    "calculator",
+    "premium-requests",
+    "react",
+    "nodejs",
+    "express"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -27,6 +39,8 @@
   },
   "devDependencies": {
     "concurrently": "^9.1.2",
-    "nodemon": "^3.1.10"
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.1"
   }
 }
