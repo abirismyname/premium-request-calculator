@@ -1,0 +1,11 @@
+{
+  "testEnvironment": "node",
+  "roots": ["server/tests"],
+  "testMatch": ["**/*.test.js"],
+  "collectCoverageFrom": [
+    "server/**/*.js",
+    "!server/tests/**"
+  ],
+  "coverageDirectory": "coverage",
+  "coverageReporters": ["text", "lcov", "html"]
+}

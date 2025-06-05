@@ -178,6 +178,12 @@ app.post('/api/calculate', (req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
+  
+  // Handle JSON parsing errors
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    return res.status(400).json({ error: 'Invalid JSON in request body' });
+  }
+  
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
