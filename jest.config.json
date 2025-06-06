@@ -7,5 +7,7 @@
     "!server/tests/**"
   ],
   "coverageDirectory": "coverage",
-  "coverageReporters": ["text", "lcov", "html"]
+  "coverageReporters": ["text", "lcov", "html"],
+  "forceExit": true,
+  "detectOpenHandles": true
 }
