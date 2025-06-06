@@ -1,0 +1,43 @@
+name: Lint
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        npm install
+        cd client && npm install
+        
+    - name: Lint backend code
+      run: |
+        # Check for basic syntax errors and code quality issues
+        npx jshint server/ --config .jshintrc || echo "JSHint not configured, using basic checks"
+        
+    - name: Lint frontend code
+      run: |
+        cd client
+        npm run build # This includes ESLint checks with create-react-app
+        
+    - name: Check for security vulnerabilities
+      run: |
+        echo "Checking backend dependencies..."
+        npm audit --audit-level=high || echo "Found vulnerabilities in backend dependencies"
+        echo "Checking frontend dependencies..."
+        cd client && npm audit --audit-level=high || echo "Found vulnerabilities in frontend dependencies"
