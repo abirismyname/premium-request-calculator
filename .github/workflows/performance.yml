@@ -1,0 +1,85 @@
+name: Performance Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * 1'  # Weekly on Mondays at 2 AM
+
+jobs:
+  performance:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        npm install
+        cd client && npm install
+        
+    - name: Build application
+      run: npm run build
+      
+    - name: Start server for testing
+      run: |
+        npm start &
+        SERVER_PID=$!
+        echo "SERVER_PID=$SERVER_PID" >> $GITHUB_ENV
+        # Wait for server to start
+        sleep 10
+        
+    - name: Install performance testing tools
+      run: |
+        npm install -g lighthouse autocannon
+        
+    - name: Run API performance tests
+      run: |
+        # Test API endpoints performance
+        echo "Testing API health endpoint..."
+        autocannon -c 10 -d 10 http://localhost:5001/api/health
+        
+        echo "Testing API models endpoint..."
+        autocannon -c 10 -d 10 http://localhost:5001/api/models
+        
+        echo "Testing API calculate endpoint..."
+        autocannon -c 5 -d 10 -m POST -H "Content-Type: application/json" \
+          -b '{"subscription":"business","model":"base-gpt-41","requests":100,"developers":1}' \
+          http://localhost:5001/api/calculate
+          
+    - name: Serve frontend for Lighthouse
+      run: |
+        cd client
+        npx serve -s build -l 3000 &
+        FRONTEND_PID=$!
+        echo "FRONTEND_PID=$FRONTEND_PID" >> $GITHUB_ENV
+        sleep 5
+        
+    - name: Run Lighthouse CI
+      run: |
+        lighthouse http://localhost:3000 \
+          --output html,json \
+          --output-path ./lighthouse-report \
+          --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+          --quiet
+          
+    - name: Upload Lighthouse results
+      uses: actions/upload-artifact@v4
+      with:
+        name: lighthouse-report
+        path: lighthouse-report.*
+        
+    - name: Cleanup processes
+      if: always()
+      run: |
+        [ ! -z "$SERVER_PID" ] && kill $SERVER_PID || true
+        [ ! -z "$FRONTEND_PID" ] && kill $FRONTEND_PID || true
