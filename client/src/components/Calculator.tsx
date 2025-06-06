@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import './Calculator.css';
 
@@ -104,14 +104,7 @@ const Calculator: React.FC = () => {
     fetchData();
   }, []);
 
-  // Calculate whenever form data changes
-  useEffect(() => {
-    if (Object.keys(models).length > 0 && Object.keys(plans).length > 0) {
-      calculateCost();
-    }
-  }, [formData, models, plans]);
-
-  const calculateCost = async () => {
+  const calculateCost = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -124,7 +117,14 @@ const Calculator: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [formData]);
+
+  // Calculate whenever form data changes
+  useEffect(() => {
+    if (Object.keys(models).length > 0 && Object.keys(plans).length > 0) {
+      calculateCost();
+    }
+  }, [formData, models, plans, calculateCost]);
 
   const handleInputChange = (field: string, value: string | number) => {
     setFormData(prev => ({ ...prev, [field]: value }));
